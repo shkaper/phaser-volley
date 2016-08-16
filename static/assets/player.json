@@ -1,0 +1,16 @@
+{ 
+    
+    "0b": [
+        
+        {
+            "density": 2, "friction": 0, "bounce": 0, 
+            "filter": { "categoryBits": 1, "maskBits": 65535 },
+            "shape": [   44, 89  ,  31, 89  ,  44, 1  ,  58, 10  ,  70, 59  ,  62, 79  ]
+        } ,
+        {
+            "density": 2, "friction": 0, "bounce": 0, 
+            "filter": { "categoryBits": 1, "maskBits": 65535 },
+            "shape": [   5, 57  ,  17, 10  ,  30, 1  ,  44, 1  ,  31, 89  ,  14, 80  ]
+        }
+    ]
+}
