@@ -21,12 +21,14 @@ class Ball extends Phaser.Sprite {
         this.body.setMaterial(material);
         //Ball is not moving when just created
         this.body.data.gravityScale = 0;
+        //Set gravity to 1 when the ball is hit first time
+        this.body.onBeginContact.addOnce(this.ballHit, this);
 
     }
 
     update() {
         //Check if ball went through the net since the previous frame
-        if ((this.y > this.game.height - 400) && (this._previousX - this.game.world.centerX) * (this.body.x - this.game.world.centerX) < 0) {
+        if ((this.y > this.game.height - 370) && (this._previousX - this.game.world.centerX) * (this.body.x - this.game.world.centerX) < 0) {
             //Move ball 50px back and reverse velocity
             this.body.x -= Math.sign(this.body.velocity.x) * 50;
             this.body.velocity.x = (-1) * this.body.velocity.x;
@@ -34,6 +36,12 @@ class Ball extends Phaser.Sprite {
             this._previousX = this.body.x;
         }
         return super.update();
+    }
+
+    ballHit(body) {
+        if (body) {
+            this.body.data.gravityScale = 1;
+        }
     }
 
 }

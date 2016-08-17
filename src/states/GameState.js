@@ -59,8 +59,6 @@ class GameState extends Phaser.State {
         // ball
         this.ball = new Ball(this.game, 145, 300, ballMaterial);
         this.game.add.existing(this.ball);
-        this.ball.body.onBeginContact.addOnce(this.ballHit, this);
-
 
         let contactPlayerBall = this.game.physics.p2.createContactMaterial(playerMaterial, ballMaterial, {
             restitution: 0.8,
@@ -166,12 +164,6 @@ class GameState extends Phaser.State {
             }
         }
         return result;
-    }
-
-    ballHit(body) {
-        if (body) {
-            this.ball.body.data.gravityScale = 1;
-        }
     }
 
 }
