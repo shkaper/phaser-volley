@@ -1,4 +1,5 @@
 import MarkerBlink from 'objects/MarkerBlink';
+import Ball from 'objects/Ball';
 
 class GameState extends Phaser.State {
 
@@ -56,13 +57,8 @@ class GameState extends Phaser.State {
         this.player.body.setMaterial(playerMaterial);
 
         // ball
-        this.ball = this.game.add.sprite(145, 300, 'ball');
-        this.game.physics.p2.enable(this.ball, this.debugMode);
-        this.ball.body.setCircle(32);
-        this.ball.body.mass = 1;
-        this.ball.body.setMaterial(ballMaterial);
-        this.ball.body.data.gravityScale = 0;
-
+        this.ball = new Ball(this.game, 145, 300, ballMaterial);
+        this.game.add.existing(this.ball);
         this.ball.body.onBeginContact.addOnce(this.ballHit, this);
 
 
