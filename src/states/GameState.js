@@ -12,6 +12,7 @@ class GameState extends Phaser.State {
     preload() {
         this.game.load.image('beach', 'img/beach.jpg');
         this.game.load.image('player', 'img/0b.png');
+        this.game.load.image('player2', 'img/0r.png');
         this.game.load.image('poleWhole', 'img/pole_whole.png');
         this.game.load.image('ball', 'img/ball.png');
         this.game.load.physics('playerData', 'assets/player.json');
@@ -51,6 +52,10 @@ class GameState extends Phaser.State {
         // player
         this.player = new Player(this.game, playerMaterial, 'left');
         this.game.add.existing(this.player);
+
+        // player 2
+        this.player2 = new Player(this.game, playerMaterial, 'right');
+        this.game.add.existing(this.player2);
 
         // ball
         this.ball = new Ball(this.game, 145, 300, ballMaterial);
