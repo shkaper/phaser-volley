@@ -1,5 +1,7 @@
 import MarkerBlink from 'objects/MarkerBlink';
 import Ball from 'objects/Ball';
+import Player from 'objects/Player';
+import Config from 'utils/Config';
 
 class GameState extends Phaser.State {
 
@@ -46,15 +48,9 @@ class GameState extends Phaser.State {
         poleWhole.body.setMaterial(worldMaterial);
         ground.body.setMaterial(groundMaterial);
 
-
         // player
-        this.player = this.game.add.sprite(85, 450, 'player');
-        this.game.physics.p2.enable(this.player, this.debugMode);
-        this.player.body.clearShapes();
-        this.player.body.loadPolygon('playerData', '0b');
-        this.player.body.fixedRotation = true;
-        this.player.body.mass = 6;
-        this.player.body.setMaterial(playerMaterial);
+        this.player = new Player(this.game, playerMaterial, 'left');
+        this.game.add.existing(this.player);
 
         // ball
         this.ball = new Ball(this.game, 145, 300, ballMaterial);
@@ -90,39 +86,10 @@ class GameState extends Phaser.State {
             this.toggleDebug();
         });
 
-        this.cursors = this.game.input.keyboard.createCursorKeys();
-
     }
 
     update() {
-        //console.log(this.player);
-
-        //  Reset the players velocity (movement)
-        this.player.body.velocity.x = 0;
-
-
-        let cur = this.cursors;
-        if (cur.left.isDown) {
-            //  Move to the left
-            this.player.body.velocity.x = -200;
-            //player.animations.play('left');
-        }
-        else if (cur.right.isDown) {
-            //  Move to the right
-            this.player.body.velocity.x = 200;
-            //player.animations.play('right');
-        }
-        else {
-            //  Stand still
-            //player.animations.stop();
-            //this.player.frame = 4;
-        }
-
-        //  Allow the player to jump if they are touching the ground.
-        if (cur.up.isDown && this.touchingDown(this.player)) {
-            this.player.body.velocity.y = -700;
-        }
-
+        return super.update();
     }
 
     render() {
@@ -135,6 +102,7 @@ class GameState extends Phaser.State {
             this.game.debug.text("DEBUG MODE. Press 'X' to disable", 20, 20, "yellow", "Segoe UI");
             //this.game.debug.text(`${this.center.x} and ${this.center.y}`, 20, 50, "yellow", "Segoe UI");
             this.game.debug.pixel(this.center.x, this.center.y, 'rgb(0,255,0)', 4);
+            //this.game.debug.pixel(this.center.x, this.game.height - 370, 'rgb(0,255,0)', 4);
         }
         this.obstacles.forEach((s)=> {
             s.body.debug = this.debugMode;
@@ -150,20 +118,6 @@ class GameState extends Phaser.State {
             this.game.debug.reset();
         }
         console.info(`Debug mode ${this.debugMode ? "enabled" : "disabled"}`);
-    }
-
-    touchingDown(someone) {
-        var yAxis = p2.vec2.fromValues(0, 1);
-        var result = false;
-        for (var i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
-            var c = this.game.physics.p2.world.narrowphase.contactEquations[i];  // cycles through all the contactEquations until it finds our "someone"
-            if (c.bodyA === someone.body.data || c.bodyB === someone.body.data) {
-                var d = p2.vec2.dot(c.normalA, yAxis); // Normal dot Y-axis
-                if (c.bodyA === someone.body.data) d *= -1;
-                if (d > 0.5) result = true;
-            }
-        }
-        return result;
     }
 
 }
