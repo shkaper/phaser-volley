@@ -11,7 +11,7 @@ class Ball extends Phaser.Sprite {
 
         super(game, x, y, 'ball');
 
-        this._radius = 32;
+        this._radius = this.height / 2;
         this._previousX = x;
 
         this.game = game;

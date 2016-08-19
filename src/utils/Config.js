@@ -1,4 +1,10 @@
 const Config = {
+    physics: {
+        gravity: {
+            y: 800
+        },
+        friction: 0.3
+    },
     player: {
         right: {
             x: 700,

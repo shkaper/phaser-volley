@@ -7,6 +7,7 @@ class GameState extends Phaser.State {
 
     init() {
         this.debugMode = true;
+        this.game.clearBeforeRender = false;
     }
 
     preload() {
@@ -25,8 +26,8 @@ class GameState extends Phaser.State {
 
         //physics
         this.game.physics.startSystem(Phaser.Physics.P2JS);
-        this.game.physics.p2.gravity.y = 750;
-        this.game.physics.p2.friction = 0.3;
+        this.game.physics.p2.gravity.y = Config.physics.gravity.y;
+        this.game.physics.p2.friction = Config.physics.friction;
 
         // material
         var playerMaterial = this.game.physics.p2.createMaterial('playerMaterial');
@@ -113,6 +114,7 @@ class GameState extends Phaser.State {
             s.body.debug = this.debugMode;
         });
         this.player.body.debug = this.debugMode;
+        this.player2.body.debug = this.debugMode;
         this.ball.body.debug = this.debugMode;
 
     }
