@@ -9,6 +9,7 @@ class GameState extends Phaser.State {
     init() {
         this.debugMode = true;
         this.game.clearBeforeRender = false;
+        this.game.time.advancedTiming = true;
     }
 
     preload() {
@@ -110,6 +111,7 @@ class GameState extends Phaser.State {
             //this.game.debug.text(`${this.game.center.x} and ${this.game.center.y}`, 20, 50, "yellow", "Segoe UI");
             this.game.debug.pixel(this.game.center.x, this.game.center.y, 'rgb(0,255,0)', 4);
         }
+        this.game.debug.text(`FPS: ${this.game.time.fps}`, 700, 20, "yellow", "Segoe UI");
         this.obstacles.forEach((s)=> {
             s.body.debug = this.debugMode;
         });
