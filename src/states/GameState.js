@@ -38,11 +38,11 @@ class GameState extends Phaser.State {
         this.game.physics.p2.updateBoundsCollisionGroup();
 
         // material
-        var playerMaterial = this.game.physics.p2.createMaterial('playerMaterial');
-        var ballMaterial = this.game.physics.p2.createMaterial('ballMaterial');
-        var worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
-        var groundMaterial = this.game.physics.p2.createMaterial('groundMaterial');
-        this.game.physics.p2.setWorldMaterial(worldMaterial, true, true, false, false);
+        let playerMaterial = this.game.physics.p2.createMaterial('playerMaterial');
+        let ballMaterial = this.game.physics.p2.createMaterial('ballMaterial');
+        let worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+        let groundMaterial = this.game.physics.p2.createMaterial('groundMaterial');
+        this.game.physics.p2.setWorldMaterial(worldMaterial, true, true, false, false); //left, right, top, bottom
 
         let ground = new Obstacle(this.game, this.game.center.x, this.game.height - 50, null, groundMaterial, obstaclesCollisionGroup, [playerCollisionGroup, ballCollisionGroup], this.game.world.width, 20);
         let poleWhole = new Obstacle(this.game, this.game.center.x, this.game.height - 200, 'poleWhole', worldMaterial, obstaclesCollisionGroup, [playerCollisionGroup, ballCollisionGroup]);
