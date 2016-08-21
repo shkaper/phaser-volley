@@ -1,6 +1,7 @@
 import MarkerBlink from 'objects/MarkerBlink';
 import Ball from 'objects/Ball';
 import Player from 'objects/Player';
+import Obstacle from 'objects/Obstacle';
 import Config from 'utils/Config';
 
 class GameState extends Phaser.State {
@@ -21,13 +22,20 @@ class GameState extends Phaser.State {
 
     create() {
         this.game.world.setBounds(0, -600, 800, 1200);
-        this.center = {x: this.game.world.centerX, y: (this.game.height / 2)};
+        this.game.center = {x: this.game.world.centerX, y: (this.game.height / 2)};
         let bg = this.game.add.sprite(0, 0, 'beach');
 
         //physics
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.gravity.y = Config.physics.gravity.y;
         this.game.physics.p2.friction = Config.physics.friction;
+        
+        //collision groups
+        let playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
+        let ballCollisionGroup = this.game.physics.p2.createCollisionGroup();
+        let obstaclesCollisionGroup = this.game.physics.p2.createCollisionGroup();
+        let playerWallCollisionGroup = this.game.physics.p2.createCollisionGroup();
+        this.game.physics.p2.updateBoundsCollisionGroup();
 
         // material
         var playerMaterial = this.game.physics.p2.createMaterial('playerMaterial');
@@ -36,30 +44,23 @@ class GameState extends Phaser.State {
         var groundMaterial = this.game.physics.p2.createMaterial('groundMaterial');
         this.game.physics.p2.setWorldMaterial(worldMaterial, true, true, false, false);
 
-        let ground = this.game.add.sprite(0, this.game.height - 50);
-        ground.scale.x = this.game.world.width;
-        let poleWhole = this.game.add.sprite(this.center.x, this.game.height - 200, 'poleWhole');
+        let ground = new Obstacle(this.game, this.game.center.x, this.game.height - 50, null, groundMaterial, obstaclesCollisionGroup, [playerCollisionGroup, ballCollisionGroup], this.game.world.width, 20);
+        let poleWhole = new Obstacle(this.game, this.game.center.x, this.game.height - 200, 'poleWhole', worldMaterial, obstaclesCollisionGroup, [playerCollisionGroup, ballCollisionGroup]);
+        let playerWall = new Obstacle(this.game, this.game.center.x, 0, null, worldMaterial, playerWallCollisionGroup, [playerCollisionGroup], poleWhole.width + 2, this.game.height * 2);
 
         this.obstacles = this.game.add.group();
-        this.obstacles.addMultiple([ground, poleWhole]);
-        this.obstacles.forEach((sprite)=> {
-            this.game.physics.p2.enable(sprite);
-            sprite.body.static = true;
-        });
-
-        poleWhole.body.setMaterial(worldMaterial);
-        ground.body.setMaterial(groundMaterial);
+        this.obstacles.addMultiple([ground, poleWhole, playerWall]);
 
         // player
-        this.player = new Player(this.game, playerMaterial, 'left');
+        this.player = new Player(this.game, playerMaterial, playerCollisionGroup, [ballCollisionGroup, obstaclesCollisionGroup, playerWallCollisionGroup], 'left');
         this.game.add.existing(this.player);
 
         // player 2
-        this.player2 = new Player(this.game, playerMaterial, 'right');
+        this.player2 = new Player(this.game, playerMaterial, playerCollisionGroup, [ballCollisionGroup, obstaclesCollisionGroup, playerWallCollisionGroup], 'right');
         this.game.add.existing(this.player2);
 
         // ball
-        this.ball = new Ball(this.game, 145, 300, ballMaterial);
+        this.ball = new Ball(this.game, 145, 300, ballMaterial, ballCollisionGroup, [playerCollisionGroup, obstaclesCollisionGroup]);
         this.game.add.existing(this.ball);
 
         let contactPlayerBall = this.game.physics.p2.createContactMaterial(playerMaterial, ballMaterial, {
@@ -106,9 +107,8 @@ class GameState extends Phaser.State {
             ////this.game.debug.bodyInfo(this.obstacles.getChildAt(0),20,20);
             ////this.game.debug.body(this.obstacles.getChildAt(12));
             this.game.debug.text("DEBUG MODE. Press 'X' to disable", 20, 20, "yellow", "Segoe UI");
-            //this.game.debug.text(`${this.center.x} and ${this.center.y}`, 20, 50, "yellow", "Segoe UI");
-            this.game.debug.pixel(this.center.x, this.center.y, 'rgb(0,255,0)', 4);
-            //this.game.debug.pixel(this.center.x, this.game.height - 370, 'rgb(0,255,0)', 4);
+            //this.game.debug.text(`${this.game.center.x} and ${this.game.center.y}`, 20, 50, "yellow", "Segoe UI");
+            this.game.debug.pixel(this.game.center.x, this.game.center.y, 'rgb(0,255,0)', 4);
         }
         this.obstacles.forEach((s)=> {
             s.body.debug = this.debugMode;

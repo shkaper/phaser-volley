@@ -2,7 +2,15 @@ import Config from '../utils/Config';
 
 class Player extends Phaser.Sprite {
 
-    constructor(game, material, side) {
+    /**
+     * Player object
+     * @param game
+     * @param {Phaser.Physics.P2.Material} material
+     * @param {Phaser.Physics.P2.CollisionGroup} collisionGroup
+     * @param {Phaser.Physics.P2.CollisionGroup|Array} collidesWith
+     * @param side
+     */
+    constructor(game, material, collisionGroup, collidesWith, side) {
 
         super(game, Config.player[side].x, Config.player[side].y, Config.player[side].sprite);
 
@@ -15,6 +23,8 @@ class Player extends Phaser.Sprite {
         this.body.fixedRotation = true;
         this.body.mass = 6;
         this.body.setMaterial(material);
+        this.body.setCollisionGroup(collisionGroup);
+        this.body.collides(collidesWith);
         this.cursors = this.game.input.keyboard.addKeys(Config.player[side].keys);
 
     }
