@@ -1,15 +1,19 @@
+import Config from '../utils/Config';
+
 class Ball extends Phaser.Sprite {
 
     /**
      * Ball object
      * @param game
-     * @param x
-     * @param y
+     * @param {String} side
      * @param {Phaser.Physics.P2.Material} material
      * @param {Phaser.Physics.P2.CollisionGroup} collisionGroup
      * @param {Phaser.Physics.P2.CollisionGroup|Array} collidesWith
      */
-    constructor(game, x, y, material, collisionGroup, collidesWith) {
+    constructor(game, side, material, collisionGroup, collidesWith) {
+
+        let x = Config.ball.position[side].x;
+        let y = Config.ball.position[side].y;
 
         super(game, x, y, 'ball');
 

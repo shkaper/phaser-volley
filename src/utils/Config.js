@@ -1,4 +1,8 @@
 const Config = {
+    game: {
+        width: 800,
+        height: 600
+    },
     physics: {
         gravity: {
             y: 800
@@ -29,6 +33,18 @@ const Config = {
                 'left': Phaser.KeyCode.A,
                 'right': Phaser.KeyCode.D
             }
+        }
+};
+
+Config.ball = {
+    position: {
+        left: {
+            x: Config.game.width / 4,
+            y: Config.game.height / 2
+        },
+        right: {
+            x: Config.game.width / 4 * 3,
+            y: Config.game.height / 2
         }
     }
 };

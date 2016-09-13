@@ -61,7 +61,7 @@ class GameState extends Phaser.State {
         this.game.add.existing(this.player2);
 
         // ball
-        this.ball = new Ball(this.game, 145, 300, ballMaterial, ballCollisionGroup, [playerCollisionGroup, obstaclesCollisionGroup]);
+        this.ball = new Ball(this.game, 'right', ballMaterial, ballCollisionGroup, [playerCollisionGroup, obstaclesCollisionGroup]);
         this.game.add.existing(this.ball);
 
         let contactPlayerBall = this.game.physics.p2.createContactMaterial(playerMaterial, ballMaterial, {

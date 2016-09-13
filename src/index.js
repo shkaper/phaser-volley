@@ -1,9 +1,10 @@
 import GameState from 'states/GameState';
+import Config from 'utils/Config';
 
 class Game extends Phaser.Game {
 
 	constructor() {
-		super(800, 600, Phaser.AUTO, 'content', null);
+		super(Config.game.width, Config.game.height, Phaser.AUTO, 'content', null);
 		this.state.add('GameState', GameState, false);
 		this.state.start('GameState');
 	}
