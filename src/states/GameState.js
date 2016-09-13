@@ -1,8 +1,9 @@
-import MarkerBlink from 'objects/MarkerBlink';
-import Ball from 'objects/Ball';
-import Player from 'objects/Player';
-import Obstacle from 'objects/Obstacle';
-import Config from 'utils/Config';
+import MarkerBlink from '../objects/MarkerBlink';
+import Ball from '../objects/Ball';
+import Player from '../objects/Player';
+import Obstacle from '../objects/Obstacle';
+import ScoreManager from '../objects/ScoreManager';
+import Config from '../utils/Config';
 
 class GameState extends Phaser.State {
 
@@ -94,10 +95,7 @@ class GameState extends Phaser.State {
             this.toggleDebug();
         });
 
-    }
 
-    update() {
-        return super.update();
     }
 
     render() {
@@ -110,14 +108,14 @@ class GameState extends Phaser.State {
             this.game.debug.text("DEBUG MODE. Press 'X' to disable", 20, 20, "yellow", "Segoe UI");
             //this.game.debug.text(`${this.game.center.x} and ${this.game.center.y}`, 20, 50, "yellow", "Segoe UI");
             this.game.debug.pixel(this.game.center.x, this.game.center.y, 'rgb(0,255,0)', 4);
+            this.game.debug.text(`FPS: ${this.game.time.fps}`, 700, 20, "yellow", "Segoe UI");
         }
-        this.game.debug.text(`FPS: ${this.game.time.fps}`, 700, 20, "yellow", "Segoe UI");
         this.obstacles.forEach((s)=> {
             s.body.debug = this.debugMode;
         });
         this.player.body.debug = this.debugMode;
         this.player2.body.debug = this.debugMode;
-        this.ball.body.debug = this.debugMode;
+        if (this.ball.body) this.ball.body.debug = this.debugMode;
 
     }
 
