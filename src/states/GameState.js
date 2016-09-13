@@ -95,6 +95,8 @@ class GameState extends Phaser.State {
             this.toggleDebug();
         });
 
+        this.scoreManager = new ScoreManager(this.game);
+        this.initiateRound();
 
     }
 
@@ -125,6 +127,23 @@ class GameState extends Phaser.State {
             this.game.debug.reset();
         }
         console.info(`Debug mode ${this.debugMode ? "enabled" : "disabled"}`);
+    }
+
+    initiateRound() {
+        this.ball.body.onBeginContact.add(this.ballHit, this);
+    }
+
+    ballHit(body, bodyB, shapeA, shapeB, equation) {
+        if (body && shapeB.material.name === 'groundMaterial') {
+            var winner;
+            if (equation[0].contactPointB[0] > 0) {
+                winner = 'right';
+            } else {
+                winner = 'left';
+            }
+            this.scoreManager.addPoint(winner);
+            this.ball.initiate(winner);
+        }
     }
 
 }

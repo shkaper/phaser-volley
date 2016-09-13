@@ -34,6 +34,22 @@ const Config = {
                 'right': Phaser.KeyCode.D
             }
         }
+    },
+    score: {
+        textPosition: {
+            left: {
+                x: 20,
+                y: 100
+            },
+            right: {
+                x: 700,
+                y: 100
+            }
+        },
+        textStyle: {
+            fill: 'red'
+        }
+    }
 };
 
 Config.ball = {
