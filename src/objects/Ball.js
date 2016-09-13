@@ -18,20 +18,15 @@ class Ball extends Phaser.Sprite {
         super(game, x, y, 'ball');
 
         this._radius = this.height / 2;
-        this._previousX = x;
 
         this.game = game;
         this.game.physics.p2.enable(this, this.game.debugMode);
         this.body.setCircle(this._radius);
         this.body.mass = 1;
         this.body.setMaterial(material);
-        //Ball is not moving when just created
-        this.body.data.gravityScale = 0;
-        //Set gravity to 1 when the ball is hit first time
-        this.body.onBeginContact.addOnce(this.ballHit, this);
         this.body.setCollisionGroup(collisionGroup);
         this.body.collides(collidesWith);
-
+        this.initiate(side);
     }
 
     update() {
@@ -50,6 +45,20 @@ class Ball extends Phaser.Sprite {
         if (body) {
             this.body.data.gravityScale = 1;
         }
+    }
+
+    /**
+     * Reset the ball and re-station it at the given side
+     * @param side
+     */
+    initiate(side) {
+        this.reset(Config.ball.position[side].x, Config.ball.position[side].y);
+        //Ball is not moving when just created
+        this.body.data.gravityScale = 0;
+        //Set gravity to 1 when the ball is hit first time
+        this.body.onBeginContact.addOnce(this.ballHit, this);
+
+        this._previousX = this.x;
     }
 
 }
